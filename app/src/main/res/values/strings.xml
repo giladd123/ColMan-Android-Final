@@ -5,4 +5,7 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="login">Login</string>
+    <string name="home">Home</string>
+    <string name="welcome_home">Welcome to MovieRate!</string>
+    <string name="sign_in_failed">Sign in failed. Please try again.</string>
 </resources>
