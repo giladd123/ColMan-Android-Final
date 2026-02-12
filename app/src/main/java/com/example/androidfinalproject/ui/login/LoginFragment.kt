@@ -40,6 +40,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val btnSignInWithGoogle = view.findViewById<MaterialButton>(R.id.btnSignInWithGoogle)
+        val btnSignIn = view.findViewById<MaterialButton>(R.id.btnSignIn)
+        val btnSignUp = view.findViewById<MaterialButton>(R.id.btnSignUp)
         val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
 
         // If already signed in, navigate directly
@@ -53,6 +55,18 @@ class LoginFragment : Fragment() {
             btnSignInWithGoogle.isEnabled = false
             val signInIntent = viewModel.buildGoogleSignInIntent()
             signInLauncher.launch(signInIntent)
+        }
+
+        btnSignIn.setOnClickListener {
+            findNavController().navigate(
+                LoginFragmentDirections.actionLoginFragmentToSignInFragment()
+            )
+        }
+
+        btnSignUp.setOnClickListener {
+            findNavController().navigate(
+                LoginFragmentDirections.actionLoginFragmentToSignUpFragment()
+            )
         }
 
         viewModel.loginResult.observe(viewLifecycleOwner) { result ->

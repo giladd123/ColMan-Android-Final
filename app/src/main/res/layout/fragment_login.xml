@@ -50,6 +50,7 @@
             app:icon="@drawable/ic_google"
             app:iconGravity="textStart"
             app:iconPadding="12dp"
+            app:iconTint="@null"
             app:layout_constraintBottom_toTopOf="@id/btnSignIn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

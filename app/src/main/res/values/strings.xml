@@ -8,4 +8,14 @@
     <string name="home">Home</string>
     <string name="welcome_home">Welcome to MovieRate!</string>
     <string name="sign_in_failed">Sign in failed. Please try again.</string>
+    <string name="sign_up_failed">Sign up failed. Please try again.</string>
+    <string name="logout">Log Out</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="error_email_required">Email is required</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_passwords_dont_match">Passwords don\'t match</string>
 </resources>
