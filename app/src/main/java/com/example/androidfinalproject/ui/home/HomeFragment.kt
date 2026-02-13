@@ -85,8 +85,10 @@ class HomeFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             swipeRefreshLayout.isRefreshing = isLoading
-            if (reviewAdapter.currentList.isEmpty()) {
-                progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            progressBar.visibility = if (isLoading && reviewAdapter.currentList.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
             }
         }
 

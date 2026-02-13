@@ -1,7 +1,9 @@
 package com.example.androidfinalproject
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -11,5 +13,23 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setOnItemSelectedListener { true }
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val authDestinations = setOf(
+            R.id.loginFragment,
+            R.id.signInFragment,
+            R.id.signUpFragment
+        )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            bottomNav.visibility = if (destination.id in authDestinations) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+        }
     }
 }
