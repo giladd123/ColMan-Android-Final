@@ -37,7 +37,6 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView(view)
         setupSwipeRefresh(view)
-        setupLogout(view)
         setupSeedButton(view)
         observeViewModel(view)
     }
@@ -53,17 +52,6 @@ class HomeFragment : Fragment() {
     private fun setupSwipeRefresh(view: View) {
         view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout).setOnRefreshListener {
             viewModel.refreshReviews()
-        }
-    }
-
-    private fun setupLogout(view: View) {
-        view.findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            AuthUI.getInstance().signOut(requireContext()).addOnCompleteListener {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToLoginFragment()
-                )
-            }
         }
     }
 

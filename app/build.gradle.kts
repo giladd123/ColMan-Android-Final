@@ -61,12 +61,13 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    implementation(libs.glide)
+    implementation(libs.picasso)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.androidx.swiperefreshlayout)

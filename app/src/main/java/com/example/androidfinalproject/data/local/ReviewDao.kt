@@ -12,6 +12,9 @@ interface ReviewDao {
     @Query("SELECT * FROM reviews ORDER BY timestamp DESC")
     fun getAllReviews(): LiveData<List<Review>>
 
+    @Query("SELECT * FROM reviews WHERE userId = :userId ORDER BY timestamp DESC")
+    fun getReviewsByUserId(userId: String): LiveData<List<Review>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReviews(reviews: List<Review>)
 
@@ -20,4 +23,7 @@ interface ReviewDao {
 
     @Query("DELETE FROM reviews")
     suspend fun deleteAllReviews()
+
+    @Query("UPDATE reviews SET userFullName = :newFullName WHERE userId = :userId")
+    suspend fun updateUserFullNameForUser(userId: String, newFullName: String)
 }
