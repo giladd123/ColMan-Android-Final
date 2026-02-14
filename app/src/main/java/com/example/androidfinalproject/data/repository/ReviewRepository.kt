@@ -14,6 +14,10 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
 
     val allReviews: LiveData<List<Review>> = reviewDao.getAllReviews()
 
+    fun getReviewsByUserId(userId: String): LiveData<List<Review>> {
+        return reviewDao.getReviewsByUserId(userId)
+    }
+
     suspend fun refreshReviews() {
         try {
             val snapshot = reviewsCollection
@@ -33,12 +37,69 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
         }
     }
 
+    suspend fun refreshReviewsForUser(userId: String) {
+        try {
+            val snapshot = reviewsCollection
+                .whereEqualTo("userId", userId)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            val reviews = snapshot.documents.mapNotNull { doc ->
+                doc.toObject(Review::class.java)?.copy(id = doc.id)
+            }
+
+            reviews.forEach { review ->
+                reviewDao.insertReview(review)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     suspend fun addReview(review: Review): Result<Review> {
         return try {
             val docRef = reviewsCollection.add(review).await()
             val newReview = review.copy(id = docRef.id)
             reviewDao.insertReview(newReview)
             Result.success(newReview)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateUserFullNameForAllReviews(userId: String, newFullName: String): Result<Unit> {
+        return try {
+            // Update Firestore in batches (max 500 writes per batch)
+            var snapshot = reviewsCollection
+                .whereEqualTo("userId", userId)
+                .limit(500)
+                .get()
+                .await()
+
+            while (snapshot.documents.isNotEmpty()) {
+                val batch = firestore.batch()
+                snapshot.documents.forEach { doc ->
+                    batch.update(doc.reference, "userFullName", newFullName)
+                }
+                batch.commit().await()
+
+                // Get next batch if needed
+                val lastDoc = snapshot.documents.lastOrNull()
+                if (snapshot.documents.size < 500) break
+                
+                snapshot = reviewsCollection
+                    .whereEqualTo("userId", userId)
+                    .startAfter(lastDoc)
+                    .limit(500)
+                    .get()
+                    .await()
+            }
+
+            // Update Room cache
+            reviewDao.updateUserFullNameForUser(userId, newFullName)
+            
+            Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }

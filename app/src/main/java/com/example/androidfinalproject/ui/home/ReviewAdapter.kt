@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import com.example.androidfinalproject.R
 import com.example.androidfinalproject.data.model.Review
 
@@ -36,10 +36,11 @@ class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(Review
             userName.text = review.userFullName
             ratingBar.rating = review.rating
 
-            Glide.with(itemView.context)
+            Picasso.get()
                 .load(review.movieBannerUrl)
                 .placeholder(R.drawable.placeholder_movie)
                 .error(R.drawable.placeholder_movie)
+                .fit()
                 .centerCrop()
                 .into(movieBanner)
         }
