@@ -12,20 +12,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
 
         val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         // Setup bottom nav with NavController
         bottomNav.setupWithNavController(navController)
 
-        // Handle nav_add click manually
+        // Handle navAdd click manually
         // This is a temporary workaround to make the add button inactive
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_add -> {
+                R.id.navAdd -> {
                     // TODO: Navigate to AddReviewFragment when implemented
                     false
                 }
