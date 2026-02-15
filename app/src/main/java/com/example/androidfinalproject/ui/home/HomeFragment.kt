@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
 
     private fun setupSeedButton(view: View) {
         view.findViewById<FloatingActionButton>(R.id.fabSeedReviews).setOnClickListener {
-            viewModel.seedExampleReviews()
+            findNavController().navigate(R.id.action_homeFragment_to_addReviewFragment)
         }
     }
 

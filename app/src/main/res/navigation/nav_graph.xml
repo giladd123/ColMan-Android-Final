@@ -67,6 +67,10 @@
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_addReviewFragment"
+            app:destination="@id/addReviewFragment" />
     </fragment>
 
     <fragment
@@ -84,6 +88,19 @@
         <action
             android:id="@+id/action_profileFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addReviewFragment"
+        android:name="com.example.androidfinalproject.ui.addreview.AddReviewFragment"
+        android:label="@string/add_review"
+        tools:layout="@layout/fragment_add_review">
+
+        <action
+            android:id="@+id/action_addReviewFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
 </navigation>

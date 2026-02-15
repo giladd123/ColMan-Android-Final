@@ -1,16 +1,19 @@
 package com.example.androidfinalproject.data.repository
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.example.androidfinalproject.data.local.ReviewDao
 import com.example.androidfinalproject.data.model.Review
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
 class ReviewRepository(private val reviewDao: ReviewDao) {
 
     private val firestore = FirebaseFirestore.getInstance()
     private val reviewsCollection = firestore.collection("reviews")
+    private val storage = FirebaseStorage.getInstance()
 
     val allReviews: LiveData<List<Review>> = reviewDao.getAllReviews()
 
@@ -100,6 +103,20 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
             reviewDao.updateUserFullNameForUser(userId, newFullName)
             
             Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun uploadReviewImage(imageUri: Uri, userId: String): Result<String> {
+        return try {
+            val storageRef = storage.reference
+            val reviewImageRef = storageRef.child("review_images/${userId}/${System.currentTimeMillis()}.jpg")
+
+            reviewImageRef.putFile(imageUri).await()
+            val downloadUrl = reviewImageRef.downloadUrl.await()
+
+            Result.success(downloadUrl.toString())
         } catch (e: Exception) {
             Result.failure(e)
         }
