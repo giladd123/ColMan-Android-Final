@@ -13,19 +13,19 @@ import com.squareup.picasso.Picasso
 import com.example.androidfinalproject.R
 import com.example.androidfinalproject.data.model.Review
 
-class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
+class ReviewAdapter(private val onReviewClick: (String) -> Unit) : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_review_card, parent, false)
-        return ReviewViewHolder(view)
+        return ReviewViewHolder(view, onReviewClick)
     }
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ReviewViewHolder(itemView: View, private val onReviewClick: (String) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val movieBanner: ImageView = itemView.findViewById(R.id.movieBanner)
         private val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
         private val userName: TextView = itemView.findViewById(R.id.userName)
@@ -43,6 +43,10 @@ class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(Review
                 .fit()
                 .centerCrop()
                 .into(movieBanner)
+
+            itemView.setOnClickListener {
+                onReviewClick(review.id)
+            }
         }
     }
 

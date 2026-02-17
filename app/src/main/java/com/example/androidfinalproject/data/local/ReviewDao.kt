@@ -15,6 +15,9 @@ interface ReviewDao {
     @Query("SELECT * FROM reviews WHERE userId = :userId ORDER BY timestamp DESC")
     fun getReviewsByUserId(userId: String): LiveData<List<Review>>
 
+    @Query("SELECT * FROM reviews WHERE id = :reviewId")
+    fun getReviewById(reviewId: String): LiveData<Review>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReviews(reviews: List<Review>)
 

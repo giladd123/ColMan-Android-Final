@@ -28,7 +28,7 @@
     <string name="seeding_complete">Example reviews added successfully!</string>
     <string name="seeding_failed">Failed to add example reviews</string>
     <string name="full_name">Display Name</string>
-    <string name="save">Save Changes</string>
+    <string name="save_changes">Save Changes</string>
     <string name="edit_profile_picture">Edit profile picture</string>
     <string name="my_reviews">My Reviews</string>
     <string name="profile_updated">Profile updated successfully</string>
@@ -36,6 +36,9 @@
     <string name="error_name_required">Name is required</string>
     <string name="uploading_image">Uploading image…</string>
     <string name="add_review">Add Review</string>
+    <string name="review_details">Review Details</string>
+    <string name="edit">EDIT</string>
+    <string name="save">SAVE</string>
     <string name="select_image">Select Image</string>
     <string name="movie_name">Movie Name</string>
     <string name="movie_description">Movie Description</string>
@@ -46,4 +49,10 @@
     <string name="image_uploaded_successfully">Image uploaded successfully</string>
     <string name="review_created_successfully">Review created successfully</string>
     <string name="review_creation_failed">Failed to create review</string>
+    <string name="review_updated_successfully">Review updated successfully</string>
+    <string name="failed_to_update_review">Failed to update review</string>
+    <string name="failed_to_upload_image">Failed to upload image</string>
+    <string name="movie_title_required">Movie title is required</string>
+    <string name="review_text_required">Review text is required</string>
+    <string name="rating_required">Please provide a rating</string>
 </resources>

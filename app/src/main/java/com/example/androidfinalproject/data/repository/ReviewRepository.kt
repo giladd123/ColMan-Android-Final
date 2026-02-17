@@ -21,6 +21,10 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
         return reviewDao.getReviewsByUserId(userId)
     }
 
+    fun getReviewById(reviewId: String): LiveData<Review> {
+        return reviewDao.getReviewById(reviewId)
+    }
+
     suspend fun refreshReviews() {
         try {
             val snapshot = reviewsCollection
@@ -117,6 +121,16 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
             val downloadUrl = reviewImageRef.downloadUrl.await()
 
             Result.success(downloadUrl.toString())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateReview(review: Review): Result<Review> {
+        return try {
+            reviewsCollection.document(review.id).set(review).await()
+            reviewDao.insertReview(review)
+            Result.success(review)
         } catch (e: Exception) {
             Result.failure(e)
         }

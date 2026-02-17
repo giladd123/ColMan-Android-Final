@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -36,7 +37,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView(view: View) {
-        reviewAdapter = ReviewAdapter()
+        reviewAdapter = ReviewAdapter { reviewId ->
+            navigateToReviewDetails(reviewId)
+        }
         view.findViewById<RecyclerView>(R.id.reviewsRecyclerView).apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reviewAdapter
@@ -75,5 +78,10 @@ class HomeFragment : Fragment() {
                 viewModel.clearSeedingStatus()
             }
         }
+    }
+
+    private fun navigateToReviewDetails(reviewId: String) {
+        val action = HomeFragmentDirections.actionHomeFragmentToReviewDetailsFragment(reviewId)
+        findNavController().navigate(action)
     }
 }
