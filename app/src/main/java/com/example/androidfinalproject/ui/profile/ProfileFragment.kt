@@ -12,11 +12,13 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.example.androidfinalproject.R
 import com.example.androidfinalproject.ui.home.ReviewAdapter
+import com.example.androidfinalproject.ui.profile.ProfileFragmentDirections
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -81,11 +83,18 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        reviewAdapter = ReviewAdapter()
+        reviewAdapter = ReviewAdapter(){ reviewId ->
+            navigateToReviewDetails(reviewId)
+        }
         reviewsRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reviewAdapter
         }
+    }
+
+    private fun navigateToReviewDetails(reviewId: String) {
+        val action = ProfileFragmentDirections.actionProfileFragmentToReviewDetailsFragment(reviewId)
+        findNavController().navigate(action)
     }
 
     private fun setupListeners() {
