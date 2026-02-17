@@ -18,6 +18,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        val omdbApiKey = project.findProperty("OMDB_API_KEY") as String? ?: ""
+        buildConfigField("String", "OMDB_API_KEY", "\"$omdbApiKey\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

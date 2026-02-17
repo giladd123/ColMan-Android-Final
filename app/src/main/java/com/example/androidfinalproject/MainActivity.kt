@@ -26,8 +26,10 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navAdd -> {
-                    // TODO: Navigate to AddReviewFragment when implemented
-                    false
+                    if (navController.currentDestination?.id != R.id.addReviewFragment) {
+                        navController.navigate(R.id.addReviewFragment)
+                    }
+                    true
                 }
                 else -> {
                     // Let NavigationUI handle homeFragment and profileFragment

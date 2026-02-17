@@ -21,6 +21,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -28,6 +30,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <!-- Movie Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/movieNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/movie_name"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMovieName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Movie Banner Image Section -->
             <com.google.android.material.card.MaterialCardView
@@ -75,20 +96,24 @@
                 android:text="@string/select_image"
                 app:icon="@drawable/ic_add" />
 
-            <!-- Movie Title -->
+            <!-- Movie Description -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/movieTitleLayout"
+                android:id="@+id/movieDescriptionLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="@string/movie_title"
-                app:endIconMode="clear_text">
+                android:hint="@string/movie_description">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/movieTitleInput"
+                    android:id="@+id/editTextMovieDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:inputType="textMultiLine"
+                    android:maxLines="6"
+                    android:minLines="3" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

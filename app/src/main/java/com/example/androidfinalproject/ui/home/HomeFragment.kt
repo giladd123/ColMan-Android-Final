@@ -9,15 +9,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.androidfinalproject.R
-import com.firebase.ui.auth.AuthUI
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
 
@@ -37,7 +32,6 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView(view)
         setupSwipeRefresh(view)
-        setupSeedButton(view)
         observeViewModel(view)
     }
 
@@ -52,12 +46,6 @@ class HomeFragment : Fragment() {
     private fun setupSwipeRefresh(view: View) {
         view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout).setOnRefreshListener {
             viewModel.refreshReviews()
-        }
-    }
-
-    private fun setupSeedButton(view: View) {
-        view.findViewById<FloatingActionButton>(R.id.fabSeedReviews).setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_addReviewFragment)
         }
     }
 

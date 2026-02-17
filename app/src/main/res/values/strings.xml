@@ -37,6 +37,8 @@
     <string name="uploading_image">Uploading image…</string>
     <string name="add_review">Add Review</string>
     <string name="select_image">Select Image</string>
+    <string name="movie_name">Movie Name</string>
+    <string name="movie_description">Movie Description</string>
     <string name="movie_title">Movie Title</string>
     <string name="rating">Rating:</string>
     <string name="review_text">Write your review here...</string>
