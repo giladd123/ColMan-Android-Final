@@ -29,6 +29,7 @@ class AddReviewFragment : Fragment() {
 
     private val viewModel: AddReviewViewModel by viewModels()
     private lateinit var movieSearchAdapter: MovieSearchAdapter
+    private lateinit var backdropAdapter: BackdropAdapter
 
     private lateinit var searchEditText: TextInputEditText
     private lateinit var searchProgressBar: ProgressBar
@@ -38,6 +39,9 @@ class AddReviewFragment : Fragment() {
     private lateinit var selectedMovieTitle: TextView
     private lateinit var selectedMovieGenre: TextView
     private lateinit var clearMovieButton: ImageButton
+    private lateinit var chooseBackdropLabel: TextView
+    private lateinit var backdropProgressBar: ProgressBar
+    private lateinit var backdropRecyclerView: RecyclerView
     private lateinit var ratingBar: RatingBar
     private lateinit var reviewEditText: TextInputEditText
     private lateinit var submitButton: MaterialButton
@@ -57,6 +61,7 @@ class AddReviewFragment : Fragment() {
         bindViews(view)
         setupSearch()
         setupRecyclerView()
+        setupBackdropRecyclerView()
         setupActions()
         observeViewModel()
     }
@@ -70,6 +75,9 @@ class AddReviewFragment : Fragment() {
         selectedMovieTitle = view.findViewById(R.id.selectedMovieTitle)
         selectedMovieGenre = view.findViewById(R.id.selectedMovieGenre)
         clearMovieButton = view.findViewById(R.id.clearMovieButton)
+        chooseBackdropLabel = view.findViewById(R.id.chooseBackdropLabel)
+        backdropProgressBar = view.findViewById(R.id.backdropProgressBar)
+        backdropRecyclerView = view.findViewById(R.id.backdropRecyclerView)
         ratingBar = view.findViewById(R.id.ratingBar)
         reviewEditText = view.findViewById(R.id.reviewEditText)
         submitButton = view.findViewById(R.id.submitButton)
@@ -95,6 +103,16 @@ class AddReviewFragment : Fragment() {
         searchResultsRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = movieSearchAdapter
+        }
+    }
+
+    private fun setupBackdropRecyclerView() {
+        backdropAdapter = BackdropAdapter { backdrop ->
+            viewModel.selectBackdrop(backdrop)
+        }
+        backdropRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = backdropAdapter
         }
     }
 
@@ -170,6 +188,34 @@ class AddReviewFragment : Fragment() {
                 viewModel.clearSubmitResult()
             }
         }
+
+        viewModel.backdrops.observe(viewLifecycleOwner) { backdrops ->
+            if (backdrops.isNotEmpty()) {
+                chooseBackdropLabel.visibility = View.VISIBLE
+                backdropRecyclerView.visibility = View.VISIBLE
+                backdropAdapter.submitList(backdrops)
+            } else {
+                chooseBackdropLabel.visibility = View.GONE
+                backdropRecyclerView.visibility = View.GONE
+            }
+        }
+
+        viewModel.isLoadingBackdrops.observe(viewLifecycleOwner) { isLoading ->
+            backdropProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.selectedBackdropUrl.observe(viewLifecycleOwner) { url ->
+            if (!url.isNullOrEmpty()) {
+                Picasso.get()
+                    .load(url)
+                    .placeholder(R.drawable.placeholder_movie)
+                    .error(R.drawable.placeholder_movie)
+                    .fit()
+                    .centerCrop()
+                    .into(selectedMovieBanner)
+                backdropAdapter.setSelectedUrl(url)
+            }
+        }
     }
 
     private fun showSelectedMovie(movie: TmdbMovie) {
@@ -182,17 +228,20 @@ class AddReviewFragment : Fragment() {
         ).joinToString(" \u00B7 ")
         selectedMovieGenre.text = details
 
-        val imageUrl = movie.backdropUrl ?: movie.posterUrl
-        if (imageUrl != null) {
-            Picasso.get()
-                .load(imageUrl)
-                .placeholder(R.drawable.placeholder_movie)
-                .error(R.drawable.placeholder_movie)
-                .fit()
-                .centerCrop()
-                .into(selectedMovieBanner)
-        } else {
-            selectedMovieBanner.setImageResource(R.drawable.placeholder_movie)
+        // Banner image is handled by selectedBackdropUrl observer
+        if (viewModel.selectedBackdropUrl.value.isNullOrEmpty()) {
+            val imageUrl = movie.backdropUrl ?: movie.posterUrl
+            if (imageUrl != null) {
+                Picasso.get()
+                    .load(imageUrl)
+                    .placeholder(R.drawable.placeholder_movie)
+                    .error(R.drawable.placeholder_movie)
+                    .fit()
+                    .centerCrop()
+                    .into(selectedMovieBanner)
+            } else {
+                selectedMovieBanner.setImageResource(R.drawable.placeholder_movie)
+            }
         }
     }
 

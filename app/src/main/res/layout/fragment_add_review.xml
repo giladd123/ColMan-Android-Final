@@ -152,6 +152,33 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Backdrop Selection Section -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/chooseBackdropLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/choose_backdrop"
+                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/backdropProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/backdropRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
             <!-- Rating Section -->
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"

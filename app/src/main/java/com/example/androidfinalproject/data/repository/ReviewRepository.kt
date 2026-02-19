@@ -94,6 +94,18 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
         }
     }
 
+    suspend fun updateReview(reviewId: String, rating: Float, reviewText: String, movieBannerUrl: String): Result<Unit> {
+        return try {
+            reviewsCollection.document(reviewId).update(
+                mapOf("rating" to rating, "reviewText" to reviewText, "movieBannerUrl" to movieBannerUrl)
+            ).await()
+            reviewDao.updateReviewWithBanner(reviewId, rating, reviewText, movieBannerUrl)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun updateUserFullNameForAllReviews(userId: String, newFullName: String): Result<Unit> {
         return try {
             // Update Firestore in batches (max 500 writes per batch)
