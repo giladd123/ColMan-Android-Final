@@ -53,6 +53,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel(view: View) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.reviewsRecyclerView)
         val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
         val emptyStateText = view.findViewById<TextView>(R.id.emptyStateText)
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
