@@ -35,4 +35,12 @@
     <string name="profile_update_failed">Failed to update profile</string>
     <string name="error_name_required">Name is required</string>
     <string name="uploading_image">Uploading image…</string>
+    <string name="add_review">Add Review</string>
+    <string name="search_movies">Search movies…</string>
+    <string name="clear_selection">Clear selection</string>
+    <string name="your_rating">Your Rating</string>
+    <string name="write_your_review">Write your review…</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="review_submitted">Review submitted successfully!</string>
+    <string name="review_submit_failed">Failed to submit review</string>
 </resources>

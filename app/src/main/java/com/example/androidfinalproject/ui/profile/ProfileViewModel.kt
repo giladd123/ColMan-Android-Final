@@ -100,8 +100,11 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             try {
                 val result = userProfileRepository.updateProfile(currentUserId, fullName, photoUrl)
                 if (result.isSuccess) {
-                    // Update review author names in background
+                    // Update review author names and profile picture in background
                     reviewRepository.updateUserFullNameForAllReviews(currentUserId, fullName)
+                    if (photoUrl != null) {
+                        reviewRepository.updateUserProfilePictureForAllReviews(currentUserId, photoUrl)
+                    }
                     _saveSuccess.value = true
                 } else {
                     _error.value = result.exceptionOrNull()?.message

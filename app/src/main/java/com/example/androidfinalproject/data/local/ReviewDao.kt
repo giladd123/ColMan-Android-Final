@@ -26,4 +26,7 @@ interface ReviewDao {
 
     @Query("UPDATE reviews SET userFullName = :newFullName WHERE userId = :userId")
     suspend fun updateUserFullNameForUser(userId: String, newFullName: String)
+
+    @Query("UPDATE reviews SET userProfilePictureUrl = :newPhotoUrl WHERE userId = :userId")
+    suspend fun updateUserProfilePictureForUser(userId: String, newPhotoUrl: String)
 }

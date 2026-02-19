@@ -86,4 +86,10 @@
             app:destination="@id/homeFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/addReviewFragment"
+        android:name="com.example.androidfinalproject.ui.addreview.AddReviewFragment"
+        android:label="@string/add_review"
+        tools:layout="@layout/fragment_add_review" />
+
 </navigation>

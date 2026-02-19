@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.example.androidfinalproject.R
 import com.example.androidfinalproject.data.model.Review
@@ -30,11 +31,20 @@ class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(Review
         private val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
         private val userName: TextView = itemView.findViewById(R.id.userName)
         private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
+        private val movieGenre: TextView = itemView.findViewById(R.id.movieGenre)
+        private val userProfileImage: ShapeableImageView = itemView.findViewById(R.id.userProfileImage)
 
         fun bind(review: Review) {
             movieTitle.text = review.movieTitle
             userName.text = review.userFullName
             ratingBar.rating = review.rating
+
+            if (review.movieGenre.isNotEmpty()) {
+                movieGenre.text = review.movieGenre
+                movieGenre.visibility = View.VISIBLE
+            } else {
+                movieGenre.visibility = View.GONE
+            }
 
             Picasso.get()
                 .load(review.movieBannerUrl)
@@ -43,6 +53,18 @@ class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(Review
                 .fit()
                 .centerCrop()
                 .into(movieBanner)
+
+            if (review.userProfilePictureUrl.isNotEmpty()) {
+                Picasso.get()
+                    .load(review.userProfilePictureUrl)
+                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.ic_person)
+                    .fit()
+                    .centerCrop()
+                    .into(userProfileImage)
+            } else {
+                userProfileImage.setImageResource(R.drawable.ic_person)
+            }
         }
     }
 

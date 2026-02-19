@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.androidfinalproject.data.model.Review
 import com.example.androidfinalproject.data.model.UserProfile
 
-@Database(entities = [Review::class, UserProfile::class], version = 2, exportSchema = false)
+@Database(entities = [Review::class, UserProfile::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun reviewDao(): ReviewDao
     abstract fun userProfileDao(): UserProfileDao
