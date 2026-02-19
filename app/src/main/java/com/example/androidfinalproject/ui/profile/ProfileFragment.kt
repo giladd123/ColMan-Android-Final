@@ -81,7 +81,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        reviewAdapter = ReviewAdapter()
+        reviewAdapter = ReviewAdapter { review ->
+            val action = ProfileFragmentDirections.actionProfileFragmentToReviewDetailFragment(review.id)
+            findNavController().navigate(action)
+        }
         reviewsRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reviewAdapter
