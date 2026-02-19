@@ -3,6 +3,12 @@
 
     <style name="Theme.AndroidFinalProject" parent="Theme.Material3.Light.NoActionBar" />
 
+    <style name="Theme.AndroidFinalProject.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/movie_rate_no_text</item>
+        <item name="postSplashScreenTheme">@style/Theme.AndroidFinalProject</item>
+    </style>
+
     <style name="CircleImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

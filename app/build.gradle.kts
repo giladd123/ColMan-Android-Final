@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.splashscreen)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
