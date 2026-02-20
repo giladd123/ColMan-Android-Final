@@ -78,7 +78,7 @@ class AddReviewViewModel(application: Application) : AndroidViewModel(applicatio
     fun selectMovie(movie: TmdbMovie) {
         _selectedMovie.value = movie
         _searchResults.value = emptyList()
-        _selectedBackdropUrl.value = movie.backdropUrl ?: ""
+        _selectedBackdropUrl.value = (movie.backdropUrl ?: movie.posterUrl).orEmpty()
         fetchBackdrops(movie.id)
     }
 
@@ -129,7 +129,10 @@ class AddReviewViewModel(application: Application) : AndroidViewModel(applicatio
 
             val review = Review(
                 movieTitle = movie.title,
-                movieBannerUrl = _selectedBackdropUrl.value ?: movie.backdropUrl ?: "",
+                movieBannerUrl = _selectedBackdropUrl.value?.takeIf { it.isNotEmpty() }
+                    ?: movie.backdropUrl?.takeIf { it.isNotEmpty() }
+                    ?: movie.posterUrl?.takeIf { it.isNotEmpty() }
+                    ?: "",
                 movieTmdbId = movie.id,
                 movieGenre = TmdbGenres.getGenreNames(movie.genreIds),
                 rating = rating,

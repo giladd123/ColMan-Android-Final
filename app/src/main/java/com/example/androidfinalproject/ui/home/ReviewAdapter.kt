@@ -49,14 +49,18 @@ class ReviewAdapter(
             } else {
                 movieGenre.visibility = View.GONE
             }
-
-            Picasso.get()
-                .load(review.movieBannerUrl)
-                .placeholder(R.drawable.placeholder_movie)
-                .error(R.drawable.placeholder_movie)
-                .fit()
-                .centerCrop()
-                .into(movieBanner)
+            
+            if(review.movieBannerUrl != "") {
+                Picasso.get()
+                    .load(review.movieBannerUrl)
+                    .placeholder(R.drawable.placeholder_movie)
+                    .error(R.drawable.placeholder_movie)
+                    .fit()
+                    .centerCrop()
+                    .into(movieBanner)
+            } else {
+                movieBanner.setImageResource(R.drawable.placeholder_movie)
+            }
 
             if (review.userProfilePictureUrl.isNotEmpty()) {
                 Picasso.get()

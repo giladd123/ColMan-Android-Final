@@ -96,11 +96,15 @@ class ReviewDetailFragment : Fragment() {
                     movieGenre.visibility = View.GONE
                 }
 
-                Picasso.get()
-                    .load(it.movieBannerUrl)
-                    .placeholder(R.drawable.placeholder_movie)
-                    .error(R.drawable.placeholder_movie)
-                    .into(movieBanner)
+                if (it.movieBannerUrl.isNotEmpty()) {
+                    Picasso.get()
+                        .load(it.movieBannerUrl)
+                        .placeholder(R.drawable.placeholder_movie)
+                        .error(R.drawable.placeholder_movie)
+                        .into(movieBanner)
+                } else {
+                    movieBanner.setImageResource(R.drawable.placeholder_movie)
+                }
 
                 if (it.userProfilePictureUrl.isNotEmpty()) {
                     Picasso.get()
