@@ -87,7 +87,7 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
                 // Get next batch if needed
                 val lastDoc = snapshot.documents.lastOrNull()
                 if (snapshot.documents.size < 500) break
-                
+
                 snapshot = reviewsCollection
                     .whereEqualTo("userId", userId)
                     .startAfter(lastDoc)
@@ -98,7 +98,41 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
 
             // Update Room cache
             reviewDao.updateUserFullNameForUser(userId, newFullName)
-            
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateUserProfilePictureForAllReviews(userId: String, newPhotoUrl: String): Result<Unit> {
+        return try {
+            var snapshot = reviewsCollection
+                .whereEqualTo("userId", userId)
+                .limit(500)
+                .get()
+                .await()
+
+            while (snapshot.documents.isNotEmpty()) {
+                val batch = firestore.batch()
+                snapshot.documents.forEach { doc ->
+                    batch.update(doc.reference, "userProfilePictureUrl", newPhotoUrl)
+                }
+                batch.commit().await()
+
+                val lastDoc = snapshot.documents.lastOrNull()
+                if (snapshot.documents.size < 500) break
+
+                snapshot = reviewsCollection
+                    .whereEqualTo("userId", userId)
+                    .startAfter(lastDoc)
+                    .limit(500)
+                    .get()
+                    .await()
+            }
+
+            reviewDao.updateUserProfilePictureForUser(userId, newPhotoUrl)
+
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
