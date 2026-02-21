@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -35,7 +36,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView(view: View) {
-        reviewAdapter = ReviewAdapter()
+        reviewAdapter = ReviewAdapter { review ->
+            val action = HomeFragmentDirections.actionHomeFragmentToReviewDetailFragment(review.id)
+            findNavController().navigate(action)
+        }
         view.findViewById<RecyclerView>(R.id.reviewsRecyclerView).apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reviewAdapter

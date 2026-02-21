@@ -67,6 +67,10 @@
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_reviewDetailFragment"
+            app:destination="@id/reviewDetailFragment" />
     </fragment>
 
     <fragment
@@ -84,6 +88,10 @@
         <action
             android:id="@+id/action_profileFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_reviewDetailFragment"
+            app:destination="@id/reviewDetailFragment" />
     </fragment>
 
     <fragment
@@ -91,5 +99,16 @@
         android:name="com.example.androidfinalproject.ui.addreview.AddReviewFragment"
         android:label="@string/add_review"
         tools:layout="@layout/fragment_add_review" />
+
+    <fragment
+        android:id="@+id/reviewDetailFragment"
+        android:name="com.example.androidfinalproject.ui.reviewdetail.ReviewDetailFragment"
+        android:label="@string/review_detail"
+        tools:layout="@layout/fragment_review_detail">
+
+        <argument
+            android:name="reviewId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

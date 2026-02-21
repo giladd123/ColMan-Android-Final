@@ -18,6 +18,10 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
         return reviewDao.getReviewsByUserId(userId)
     }
 
+    fun getReviewById(reviewId: String): LiveData<Review?> {
+        return reviewDao.getReviewById(reviewId)
+    }
+
     suspend fun refreshReviews() {
         try {
             val snapshot = reviewsCollection
@@ -63,6 +67,28 @@ class ReviewRepository(private val reviewDao: ReviewDao) {
             val newReview = review.copy(id = docRef.id)
             reviewDao.insertReview(newReview)
             Result.success(newReview)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun deleteReview(reviewId: String): Result<Unit> {
+        return try {
+            reviewsCollection.document(reviewId).delete().await()
+            reviewDao.deleteReviewById(reviewId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateReview(reviewId: String, rating: Float, reviewText: String): Result<Unit> {
+        return try {
+            reviewsCollection.document(reviewId).update(
+                mapOf("rating" to rating, "reviewText" to reviewText)
+            ).await()
+            reviewDao.updateReview(reviewId, rating, reviewText)
+            Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }

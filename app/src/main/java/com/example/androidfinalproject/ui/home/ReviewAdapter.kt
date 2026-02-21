@@ -14,7 +14,9 @@ import com.squareup.picasso.Picasso
 import com.example.androidfinalproject.R
 import com.example.androidfinalproject.data.model.Review
 
-class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
+class ReviewAdapter(
+    private val onReviewClick: (Review) -> Unit = {}
+) : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,7 +25,9 @@ class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(Review
     }
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val review = getItem(position)
+        holder.bind(review)
+        holder.itemView.setOnClickListener { onReviewClick(review) }
     }
 
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
