@@ -6,6 +6,23 @@ data class TmdbSearchResponse(
     val results: List<TmdbMovie> = emptyList()
 )
 
+data class TmdbImagesResponse(
+    val id: Int = 0,
+    val backdrops: List<TmdbBackdrop> = emptyList()
+)
+
+data class TmdbBackdrop(
+    @SerializedName("file_path") val filePath: String = "",
+    val width: Int = 0,
+    val height: Int = 0
+) {
+    val fullUrl: String
+        get() = "https://image.tmdb.org/t/p/w780$filePath"
+
+    val thumbnailUrl: String
+        get() = "https://image.tmdb.org/t/p/w300$filePath"
+}
+
 data class TmdbMovie(
     val id: Int = 0,
     val title: String = "",

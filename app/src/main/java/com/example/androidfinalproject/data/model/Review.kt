@@ -9,6 +9,7 @@ data class Review(
     val id: String = "",
     val movieTitle: String = "",
     val movieBannerUrl: String = "",
+    val movieTmdbId: Int = 0,
     val movieGenre: String = "",
     val rating: Float = 0f,
     val reviewText: String = "",

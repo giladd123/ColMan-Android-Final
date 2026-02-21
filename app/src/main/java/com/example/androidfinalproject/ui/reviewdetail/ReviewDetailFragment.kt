@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
@@ -20,6 +23,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.example.androidfinalproject.R
 import com.example.androidfinalproject.data.model.Review
+import com.example.androidfinalproject.ui.addreview.BackdropAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -143,9 +147,37 @@ class ReviewDetailFragment : Fragment() {
 
         val editRatingBar = dialogView.findViewById<RatingBar>(R.id.editRatingBar)
         val editReviewText = dialogView.findViewById<TextInputEditText>(R.id.editReviewText)
+        val editBackdropLabel = dialogView.findViewById<View>(R.id.editBackdropLabel)
+        val editBackdropProgressBar = dialogView.findViewById<ProgressBar>(R.id.editBackdropProgressBar)
+        val editBackdropRecyclerView = dialogView.findViewById<RecyclerView>(R.id.editBackdropRecyclerView)
 
         editRatingBar.rating = review.rating
         editReviewText.setText(review.reviewText)
+
+        var selectedBackdropUrl = review.movieBannerUrl
+
+        val backdropAdapter = BackdropAdapter { backdrop ->
+            selectedBackdropUrl = backdrop.fullUrl
+        }
+        editBackdropRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = backdropAdapter
+        }
+
+        viewModel.fetchBackdropsForMovie(review.movieTmdbId)
+
+        viewModel.backdrops.observe(viewLifecycleOwner) { backdrops ->
+            if (backdrops.isNotEmpty()) {
+                editBackdropLabel.visibility = View.VISIBLE
+                editBackdropRecyclerView.visibility = View.VISIBLE
+                backdropAdapter.submitList(backdrops)
+                backdropAdapter.setSelectedUrl(selectedBackdropUrl)
+            }
+        }
+
+        viewModel.isLoadingBackdrops.observe(viewLifecycleOwner) { isLoading ->
+            editBackdropProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.edit_review)
@@ -154,7 +186,11 @@ class ReviewDetailFragment : Fragment() {
                 val newRating = editRatingBar.rating
                 val newText = editReviewText.text?.toString()?.trim() ?: ""
                 if (newRating > 0 && newText.isNotEmpty()) {
-                    viewModel.updateReview(review.id, newRating, newText)
+                    if (selectedBackdropUrl != review.movieBannerUrl) {
+                        viewModel.updateReview(review.id, newRating, newText, selectedBackdropUrl)
+                    } else {
+                        viewModel.updateReview(review.id, newRating, newText)
+                    }
                 }
             }
             .setNegativeButton(android.R.string.cancel, null)

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.androidfinalproject.data.local.AppDatabase
 import com.example.androidfinalproject.data.model.Review
+import com.example.androidfinalproject.data.model.TmdbBackdrop
 import com.example.androidfinalproject.data.model.TmdbMovie
 import com.example.androidfinalproject.data.remote.TmdbClient
 import com.example.androidfinalproject.data.remote.TmdbGenres
@@ -36,6 +37,15 @@ class AddReviewViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val _submitResult = MutableLiveData<Result<Review>?>()
     val submitResult: LiveData<Result<Review>?> = _submitResult
+
+    private val _backdrops = MutableLiveData<List<TmdbBackdrop>>()
+    val backdrops: LiveData<List<TmdbBackdrop>> = _backdrops
+
+    private val _selectedBackdropUrl = MutableLiveData<String>()
+    val selectedBackdropUrl: LiveData<String> = _selectedBackdropUrl
+
+    private val _isLoadingBackdrops = MutableLiveData<Boolean>()
+    val isLoadingBackdrops: LiveData<Boolean> = _isLoadingBackdrops
 
     private var searchJob: Job? = null
 
@@ -68,10 +78,35 @@ class AddReviewViewModel(application: Application) : AndroidViewModel(applicatio
     fun selectMovie(movie: TmdbMovie) {
         _selectedMovie.value = movie
         _searchResults.value = emptyList()
+        _selectedBackdropUrl.value = movie.backdropUrl ?: ""
+        fetchBackdrops(movie.id)
     }
 
     fun clearSelectedMovie() {
         _selectedMovie.value = null
+        _backdrops.value = emptyList()
+        _selectedBackdropUrl.value = ""
+    }
+
+    fun selectBackdrop(backdrop: TmdbBackdrop) {
+        _selectedBackdropUrl.value = backdrop.fullUrl
+    }
+
+    private fun fetchBackdrops(movieId: Int) {
+        viewModelScope.launch {
+            _isLoadingBackdrops.value = true
+            try {
+                val response = TmdbClient.api.getMovieImages(movieId)
+                _backdrops.value = response.backdrops
+                if (response.backdrops.isNotEmpty() && _selectedBackdropUrl.value.isNullOrEmpty()) {
+                    _selectedBackdropUrl.value = response.backdrops[0].fullUrl
+                }
+            } catch (e: Exception) {
+                _backdrops.value = emptyList()
+            } finally {
+                _isLoadingBackdrops.value = false
+            }
+        }
     }
 
     fun submitReview(rating: Float, reviewText: String) {
@@ -94,7 +129,8 @@ class AddReviewViewModel(application: Application) : AndroidViewModel(applicatio
 
             val review = Review(
                 movieTitle = movie.title,
-                movieBannerUrl = movie.backdropUrl ?: "",
+                movieBannerUrl = _selectedBackdropUrl.value ?: movie.backdropUrl ?: "",
+                movieTmdbId = movie.id,
                 movieGenre = TmdbGenres.getGenreNames(movie.genreIds),
                 rating = rating,
                 reviewText = reviewText,

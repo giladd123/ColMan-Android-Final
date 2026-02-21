@@ -52,4 +52,7 @@
     <string name="review_update_failed">Failed to update review</string>
     <string name="review_deleted">Review deleted successfully</string>
     <string name="review_delete_failed">Failed to delete review</string>
+    <string name="choose_backdrop">Choose Backdrop</string>
+    <string name="backdrop_image_description">Movie backdrop image</string>
+    <string name="selected">Selected</string>
 </resources>

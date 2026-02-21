@@ -38,4 +38,7 @@ interface ReviewDao {
 
     @Query("UPDATE reviews SET rating = :rating, reviewText = :reviewText WHERE id = :reviewId")
     suspend fun updateReview(reviewId: String, rating: Float, reviewText: String)
+
+    @Query("UPDATE reviews SET rating = :rating, reviewText = :reviewText, movieBannerUrl = :movieBannerUrl WHERE id = :reviewId")
+    suspend fun updateReviewWithBanner(reviewId: String, rating: Float, reviewText: String, movieBannerUrl: String)
 }
