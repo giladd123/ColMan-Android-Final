@@ -4,6 +4,7 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 
 class AuthRepository {
@@ -35,11 +36,15 @@ class AuthRepository {
         }
     }
 
-    suspend fun signUpWithEmail(email: String, password: String): Result<FirebaseUser> {
+    suspend fun signUpWithEmail(email: String, password: String, displayName: String): Result<FirebaseUser> {
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            authResult.user?.let {
-                Result.success(it)
+            authResult.user?.let { user ->
+                val profileUpdate = UserProfileChangeRequest.Builder()
+                    .setDisplayName(displayName)
+                    .build()
+                user.updateProfile(profileUpdate).await()
+                Result.success(user)
             } ?: Result.failure(Exception("Sign-up returned null user"))
         } catch (e: Exception) {
             Result.failure(e)

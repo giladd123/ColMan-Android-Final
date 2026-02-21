@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidfinalproject.R
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 
@@ -32,6 +33,9 @@ class SignInFragment : Fragment() {
         val passwordLayout = view.findViewById<TextInputLayout>(R.id.passwordInputLayout)
         val btnSignIn = view.findViewById<MaterialButton>(R.id.btnSignIn)
         val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+
+        view.findViewById<MaterialToolbar>(R.id.toolbar)
+            .setNavigationOnClickListener { findNavController().navigateUp() }
 
         btnSignIn.setOnClickListener {
             val email = emailLayout.editText?.text.toString().trim()
